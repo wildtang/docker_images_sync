@@ -3,9 +3,16 @@
 run bash docker-login.sh to login first, password see KeePassX.
 
 Add your docker image name which want to pull to images.txt,
-run 
+then run :
   git add images.txt
   git commit -m "some comment"
   git push
 
-Then run: ./cmd/
+ (P.S remote repo is git@github.com:wildtang/docker_images_sync.git)
+
+Then run command like below to pull the image:
+  ./cmd/docker_pull redimp/otterwiki:2
+
+# TODO
+This method still works on 2025/10/5,
+But it is not concise, Continue to find the proxy way for this NAS!
