@@ -1,2 +1,1 @@
 redimp/otterwiki:2
-postgres:16.10
