@@ -1,4 +1,5 @@
-* Need run in fish (/opt/bin/fish), needs git.
+# Need run in fish (/opt/bin/fish), needs git.
+# 在家里NAS上的终端，用nano编辑无法输入中文，但通过micro可以
 
 run bash docker-login.sh to login first, password see KeePassX.
 
