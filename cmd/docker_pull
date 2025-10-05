@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# fish path not set docker, so use full path
+qDOCKER=/share/CACHEDEV2_DATA/.qpkg/container-station/bin/docker
+
 # Find config file path
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="$SCRIPT_DIR/conf.yaml"
@@ -108,13 +111,17 @@ for tag in "$@"; do
     for ((attempt=1; attempt<=MAX_RETRIES; attempt++)); do
         if [ $success -eq 0 ]; then
             echo "[Attempt $attempt/$MAX_RETRIES] Pulling $full_tag"
-            docker pull "$full_tag"
+
+            # docker pull "$full_tag"
+            $qDOCKER pull "$full_tag"
             
             if [ $? -eq 0 ]; then
                 success=1
                 echo "[pull images] Successfully pulled $full_tag, now delete origin image $full_tag:"
-                docker tag "$full_tag" "$tag"
-                docker rmi "$full_tag"
+                # docker tag "$full_tag" "$tag"
+                # docker rmi "$full_tag"
+                $qDOCKER tag "$full_tag" "$tag"
+                $qDOCKER rmi "$full_tag"
             else
                 if [ $attempt -lt $MAX_RETRIES ]; then
                     sleep "$RETRY_DELAY"

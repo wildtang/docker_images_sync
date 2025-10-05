@@ -1,1 +1,2 @@
-nocodb/nocodb:0.263.8
+redimp/otterwiki:2
+postgres:16.10

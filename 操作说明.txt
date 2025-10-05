@@ -1,0 +1,11 @@
+* Need run in fish (/opt/bin/fish), needs git.
+
+run bash docker-login.sh to login first, password see KeePassX.
+
+Add your docker image name which want to pull to images.txt,
+run 
+  git add images.txt
+  git commit -m "some comment"
+  git push
+
+Then run: ./cmd/
