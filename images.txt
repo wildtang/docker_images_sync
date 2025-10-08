@@ -1,1 +1,1 @@
-hackmdio/codimd:2.6.1
+hackmdio/hackmd:2.6.1

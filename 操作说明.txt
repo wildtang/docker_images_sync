@@ -1,7 +1,7 @@
 # Need run in fish (/opt/bin/fish), needs git.
 # 在家里NAS上的终端，用nano编辑无法输入中文，但通过micro可以
 
-run bash docker-login.sh to login first, password see KeePassX.
+首先运行： bash docker-login.sh, 密码见KeePassX内阿里云个人账号 13621206763条目。
 
 Add your docker image name which want to pull to images.txt,
 then run :
