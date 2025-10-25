@@ -1,2 +1,1 @@
-denho/faved:2.2.4
 ghcr.io/usememos/memos:0.25.2
