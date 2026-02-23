@@ -24,11 +24,11 @@ while IFS= read -r line || [ -n "$line" ]; do
     # Skip comments and empty lines
     line=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
     [[ -z "$line" || "$line" =~ ^# ]] && continue
-    
+
     # Split key and value
     key=$(echo "$line" | cut -d':' -f1 | tr -d '[:space:]' | tr -d '"')
     value=$(echo "$line" | cut -d':' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | tr -d '"')
-    
+
     case "$key" in
         "registry")
             REGISTRY_URL="$value"
@@ -81,7 +81,7 @@ fi
 # Execute git pull
 echo "[refresh git repo] Start git pull:"
 pushd "$IMAGES_DIR" > /dev/null
-git pull
+/opt/bin/git pull
 popd > /dev/null
 
 # Write images.txt file
@@ -91,9 +91,9 @@ printf "%s\n" "$@" > "$IMAGES_DIR/images.txt"
 # Execute git commit
 echo "[commit images] Start git commit:"
 pushd "$IMAGES_DIR" > /dev/null
-git add images.txt
-git commit -m "refactor: add docker tags: $*"
-git push
+/opt/bin/git add images.txt
+/opt/bin/git commit -m "refactor: add docker tags: $*"
+/opt/bin/git push
 popd > /dev/null
 
 echo "[pull images] wait ${FIRST_DELAY}s for docker pull in github"
@@ -107,21 +107,21 @@ for tag in "$@"; do
     last_part=$(basename "$tag")
     full_tag="$REGISTRY_URL/$REGISTRY_NS/$last_part"
     success=0
-    
+
     for ((attempt=1; attempt<=MAX_RETRIES; attempt++)); do
         if [ $success -eq 0 ]; then
             echo "[Attempt $attempt/$MAX_RETRIES] Pulling $full_tag"
 
             # docker pull "$full_tag"
-            $qDOCKER pull "$full_tag"
-            
+            sudo $qDOCKER pull "$full_tag"
+
             if [ $? -eq 0 ]; then
                 success=1
                 echo "[pull images] Successfully pulled $full_tag, now delete origin image $full_tag:"
                 # docker tag "$full_tag" "$tag"
                 # docker rmi "$full_tag"
-                $qDOCKER tag "$full_tag" "$tag"
-                $qDOCKER rmi "$full_tag"
+                sudo $qDOCKER tag "$full_tag" "$tag"
+                sudo $qDOCKER rmi "$full_tag"
             else
                 if [ $attempt -lt $MAX_RETRIES ]; then
                     sleep "$RETRY_DELAY"
@@ -129,7 +129,7 @@ for tag in "$@"; do
             fi
         fi
     done
-    
+
     if [ $success -eq 0 ]; then
         echo "[pull images] Failed to pull $full_tag after $MAX_RETRIES attempts"
         FAILED_TAGS+=("$tag")
